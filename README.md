@@ -1,30 +1,30 @@
-Field Stats Plugin for Elasticsearch
+Field Stats Plugin for OpenSearch
 ====================================
 
 This plugin provides a feature very similar to Field Stats native
-Elasticsearch functionality that has been removed from Elasticsearch starting
+opensearch functionality that has been removed from Elasticsearch starting
 from version 6.0. It imitates the old functionality and is compatible with the
 old API.
 
-Read more about potential use cases in the blog post [Field Stats for Elasticsearch 6.x](https://sematext.com/blog/field-stats-plugin-elasticsearch/).
+Read more about potential use cases in the blog post [Field Stats for Elasticsearch 6.x](https://sematext.com/blog/field-stats-plugin-opensearch/).
 
 Installation
 ------------
 
 Make sure to change the version number in the download URL based on your ES version. You can
-find available releases here: https://github.com/sematext/elasticsearch-field-stats/releases. The
-plugin version must match your Elasticsearch version. Feel free to contribute
-new version if your version is not supported Elasticsearch version which you use.
+find available releases here: https://github.com/sematext/opensearch-field-stats/releases. The
+plugin version must match your OpenSearch version. Feel free to contribute
+new version if your version is not supported OpenSearch version which you use.
 
 ```
-bin/elasticsearch-plugin install URL
+bin/opensearch-plugin install URL
 ```
 
-### Example for ES 6.4.1:
+### Example for OpenSearch 2.14.0:
 
 
 ```
-bin/plugin install https://github.com/sematext/elasticsearch-field-stats/releases/download/v6.4.1/field-stats-6.4.1.zip
+bin/plugin install https://github.com/sematext/opensearch-field-stats/releases/download/v2.14.0/field-stats-2.14.0.zip
 ```
 
 
@@ -98,7 +98,7 @@ In order to install this plugin, you need to create a zip distribution.
 This will produce a zip file in `build/distributions`. After building the zip file, you can install it like this
 
 ```
-bin/plugin install file:///path/to/elasticsearch-field-stats/build/distribution/elasticsearch-field-stats-<VERSION>.zip
+bin/plugin install file:///path/to/opensearch-field-stats/build/distribution/opensearch-field-stats-<VERSION>.zip
 ```
 
 Feel free to prepare pull requests.

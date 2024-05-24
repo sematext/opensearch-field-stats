@@ -11,13 +11,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
 
-import org.elasticsearch.action.support.broadcast.BroadcastShardRequest;
-import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.common.io.stream.StreamOutput;
-import org.elasticsearch.index.shard.ShardId;
+import org.opensearch.action.support.broadcast.BroadcastShardRequest;
+import org.opensearch.core.common.io.stream.StreamInput;
+import org.opensearch.core.common.io.stream.StreamOutput;
+import org.opensearch.core.index.shard.ShardId;
 
 import java.io.IOException;
 import java.util.Arrays;

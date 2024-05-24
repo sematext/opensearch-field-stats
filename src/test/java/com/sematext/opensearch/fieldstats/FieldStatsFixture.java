@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
-import org.elasticsearch.test.fixture.AbstractHttpFixture;
+import org.opensearch.test.fixture.AbstractHttpFixture;
 
 import java.io.IOException;
 import java.util.Objects;

@@ -12,33 +12,33 @@
  * limitations under the License.
  */
 
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.GT;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.GTE;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.LT;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.LTE;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Property.MAX;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Property.MIN;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.GT;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.GTE;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.LT;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.LTE;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Property.MAX;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Property.MIN;
 import static org.hamcrest.Matchers.equalTo;
 
-import org.elasticsearch.common.bytes.BytesArray;
-import org.elasticsearch.common.io.stream.BytesStreamOutput;
-import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.common.xcontent.json.JsonXContent;
-import org.elasticsearch.index.shard.ShardId;
-import org.elasticsearch.test.ESTestCase;
-import org.elasticsearch.test.StreamsUtils;
+import org.opensearch.core.common.bytes.BytesArray;
+import org.opensearch.common.io.stream.BytesStreamOutput;
+import org.opensearch.core.common.io.stream.StreamInput;
+import org.opensearch.common.xcontent.json.JsonXContent;
+import org.opensearch.core.index.shard.ShardId;
+import org.opensearch.test.OpenSearchTestCase;
+import org.opensearch.test.StreamsUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class FieldStatsRequestTests extends ESTestCase {
+public class FieldStatsRequestTests extends OpenSearchTestCase {
 
     public void testFieldsParsing() throws Exception {
         BytesArray data = new BytesArray(StreamsUtils.copyToBytesFromClasspath(
-            "/com/sematext/elasticsearch/fieldstats/fieldstats-index-constraints-request.json"));
+                "/com/sematext/opensearch/fieldstats/fieldstats-index-constraints-request.json"));
         FieldStatsRequest request = new FieldStatsRequest();
         request.source(createParser(JsonXContent.jsonXContent, data));
 

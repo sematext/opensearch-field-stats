@@ -1,57 +1,63 @@
 ext {
     name = 'field-stats'
-    scmUrl = 'https://github.com/sematext/elasticsearch-field-stats'
-    scmConnection = 'scm:git:git://github.com/sematext/elasticsearch-field-stats.git'
-    scmDeveloperConnection = 'scm:git:git://github.com/sematext/elasticsearch-field-stats.git'
+    scmUrl = 'https://github.com/sematext/opensearch-field-stats'
+    scmConnection = 'scm:git:git://github.com/sematext/opensearch-field-stats.git'
+    scmDeveloperConnection = 'scm:git:git://github.com/sematext/opensearch-field-stats.git'
     ossrhReleaseUrl='https://oss.sonatype.org/service/local/staging/deploy/maven2/'
     ossrhSnapshotUrl='https://oss.sonatype.org/content/repositories/snapshots/'
 }
 
-task sonatypeUpload(type: Upload) {
-    configuration = configurations.archives
-    uploadDescriptor = true
-    repositories {
-        if (project.hasProperty('ossrhUsername')) {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                repository(url: uri(ossrhReleaseUrl)) {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'OpenSearch Fields Stats Plugin'
+                description = 'Field stats plugin for OpenSearch'
+                packaging = 'jar'
+                url = scmUrl
+
+                licenses {
+                    license {
+                        name = 'Apache License, Version 2.0'
+                        url = 'https://github.com/sematext/opensearch-field-stats/blob/master/LICENSE'
+                        distribution = 'repo'
+                    }
                 }
-                snapshotRepository(url: uri(ossrhSnapshotUrl)) {
-                    authentication(userName: ossrhUsername, password: ossrhPassword)
+
+                developers {
+                    developer {
+                        id = 'gr0'
+                        name = 'Rafał Kuć'
+                        email = 'rafal.kuc@sematext.com'
+                    }
                 }
-                pom.project {
-                    groupId project.group
-                    artifactId project.name
-                    version project.version
-                    name project.name
-                    description 'Elasticsearch field stats plugin'
-                    packaging 'jar'
-                    url scmUrl
-                    organization {
-                        name 'Sematext Group'
-                        url 'https://sematext.com'
-                    }
-                    scm {
-                        url scmUrl
-                        connection scmConnection
-                        developerConnection scmDeveloperConnection
-                    }
-                    licenses {
-                        license {
-                            name 'Apache License'
-                            url 'https://github.com/sematext/elasticsearch-field-stats/blob/master/LICENSE'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id 'gr0'
-                            name 'Rafał Kuć'
-                            email 'rafal.kuc@sematext.com'
-                        }
-                    }
+
+                scm {
+                    connection = scmConnection
+                    developerConnection = scmDeveloperConnection
+                    url = scmUrl
+                }
+
+                organization {
+                    name.set('Sematext Group')
+                    url.set('https://sematext.com/')
                 }
             }
         }
     }
+
+    repositories {
+        maven {
+            name = 'ossrh'
+            url = project.version.endsWith('-SNAPSHOT') ? uri(ossrhSnapshotUrl) : uri(ossrhReleaseUrl)
+            credentials {
+                username = project.findProperty('ossrhUsername') ?: ''
+                password = project.findProperty('ossrhPassword') ?: ''
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }

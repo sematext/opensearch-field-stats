@@ -1,4 +1,4 @@
-"Test that field stats plugin is loaded in Elasticsearch":
+"Test that field stats plugin is loaded in OpenSearch":
   - do:
       cat.plugins:
         local: true

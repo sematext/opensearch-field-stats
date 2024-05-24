@@ -11,26 +11,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.GT;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.GTE;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.LT;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Comparison.LTE;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Property.MAX;
-import static com.sematext.elasticsearch.fieldstats.IndexConstraint.Property.MIN;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.GT;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.GTE;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.LT;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Comparison.LTE;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Property.MAX;
+import static com.sematext.opensearch.fieldstats.IndexConstraint.Property.MIN;
 import static org.hamcrest.Matchers.containsString;
 
-import org.apache.lucene.geo.GeoTestUtil;
+import org.apache.lucene.tests.geo.GeoTestUtil;
 import org.apache.lucene.util.BytesRef;
-import org.elasticsearch.common.io.stream.BytesStreamOutput;
-import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.common.joda.Joda;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.index.mapper.DateFieldMapper;
-import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.test.ESSingleNodeTestCase;
-import org.elasticsearch.test.InternalSettingsPlugin;
+import org.opensearch.common.io.stream.BytesStreamOutput;
+import org.opensearch.core.common.io.stream.StreamInput;
+import org.opensearch.common.joda.Joda;
+import org.opensearch.common.settings.Settings;
+import org.opensearch.index.mapper.DateFieldMapper;
+import org.opensearch.plugins.Plugin;
+import org.opensearch.test.OpenSearchSingleNodeTestCase;
+import org.opensearch.test.InternalSettingsPlugin;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -45,9 +45,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.sematext.elasticsearch.plugin.FieldStatsPlugin;
+import com.sematext.opensearch.plugin.FieldStatsPlugin;
 
-public class FieldStatsTests extends ESSingleNodeTestCase {
+public class FieldStatsTests extends OpenSearchSingleNodeTestCase {
   @Override
   protected Collection<Class<? extends Plugin>> getPlugins() {
     return pluginList(InternalSettingsPlugin.class, FieldStatsPlugin.class);
@@ -98,7 +98,7 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
         "field_source", makeType("keyword", false, false, false));
     for (int value = 0; value <= 10; value++) {
       String keyword =  String.format(Locale.ENGLISH, "%03d", value);
-      client().prepareIndex("test", "test")
+      client().prepareIndex("test")
           .setSource("field_index", keyword,
               "field_dv", keyword,
               "field_stored", keyword,
@@ -142,7 +142,7 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
         "field_stored", makeType("double", false, true, true),
         "field_source", makeType("double", false, false, false));
     for (double value = -1; value <= 9; value++) {
-      client().prepareIndex("test", "test")
+      client().prepareIndex("test")
           .setSource("field_index", value, "field_dv", value, "field_stored", value, "field_source", value).get();
     }
     client().admin().indices().prepareRefresh().get();
@@ -174,7 +174,7 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
         "field_stored", makeType("half_float", false, true, true),
         "field_source", makeType("half_float", false, false, false));
     for (float value = -1; value <= 9; value++) {
-      client().prepareIndex("test", "test")
+      client().prepareIndex("test")
           .setSource("field_index", value, "field_dv", value, "field_stored", value, "field_source", value).get();
     }
     client().admin().indices().prepareRefresh().get();
@@ -209,7 +209,7 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
         "field_stored", makeType("float", false, true, true),
         "field_source", makeType("float", false, false, false));
     for (float value = -1; value <= 9; value++) {
-      client().prepareIndex("test", "test")
+      client().prepareIndex("test")
           .setSource("field_index", value, "field_dv", value, "field_stored", value, "field_source", value).get();
     }
     client().admin().indices().prepareRefresh().get();
@@ -244,7 +244,7 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
     createIndex("test2", Settings.EMPTY, "test", fieldName, "type=" + fieldType);
 
     for (long value = min; value <= max; value++) {
-      client().prepareIndex("test", "test").setSource(fieldName, value).get();
+      client().prepareIndex("test").setSource(fieldName, value).get();
     }
     client().admin().indices().prepareRefresh().get();
 
@@ -295,9 +295,9 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
 
   public void testNumberFiltering() {
     createIndex("test1", Settings.EMPTY, "test", "value", "type=long");
-    client().prepareIndex("test1", "test").setSource("value", 1L).get();
+    client().prepareIndex("test1").setSource("value", 1L).get();
     createIndex("test2", Settings.EMPTY, "test", "value", "type=long");
-    client().prepareIndex("test2", "test").setSource("value", 3L).get();
+    client().prepareIndex("test2").setSource("value", 3L).get();
     client().admin().indices().prepareRefresh().get();
 
     FieldStatsResponse response = prepareFieldStats()
@@ -402,10 +402,10 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
     String dateTime2Str = DateFieldMapper.DEFAULT_DATE_TIME_FORMATTER.format(dateTime2);
 
     createIndex("test1", Settings.EMPTY, "test", "value", "type=date", "value2", "type=date,index=false");
-    client().prepareIndex("test1", "test")
+    client().prepareIndex("test1")
         .setSource("value", dateTime1Str, "value2", dateTime1Str).get();
     createIndex("test2", Settings.EMPTY, "test", "value", "type=date");
-    client().prepareIndex("test2", "test").setSource("value", dateTime2Str).get();
+    client().prepareIndex("test2").setSource("value", dateTime2Str).get();
     client().admin().indices().prepareRefresh().get();
 
     FieldStatsResponse response = prepareFieldStats()
@@ -523,9 +523,9 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
 
   public void testDateFiltering_optionalFormat() {
     createIndex("test1", Settings.EMPTY, "type", "value", "type=date,format=strict_date_optional_time");
-    client().prepareIndex("test1", "type").setSource("value", "2014-01-01T00:00:00.000Z").get();
+    client().prepareIndex("test1").setSource("value", "2014-01-01T00:00:00.000Z").get();
     createIndex("test2", Settings.EMPTY, "type", "value", "type=date,format=strict_date_optional_time");
-    client().prepareIndex("test2", "type").setSource("value", "2014-01-02T00:00:00.000Z").get();
+    client().prepareIndex("test2").setSource("value", "2014-01-02T00:00:00.000Z").get();
     client().admin().indices().prepareRefresh().get();
 
     DateTime dateTime1 = new DateTime(2014, 1, 1, 0, 0, 0, 0, DateTimeZone.UTC);
@@ -592,15 +592,13 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
 
   public void testMetaFieldsNotIndexed() {
     createIndex("test", Settings.EMPTY);
-    client().prepareIndex("test", "type").setSource().get();
+    client().prepareIndex("test").setSource().get();
     client().admin().indices().prepareRefresh().get();
 
     FieldStatsResponse response = prepareFieldStats()
-        .setFields("_id", "_type")
+        .setFields("_id")
         .get();
-    assertEquals(response.getAllFieldStats().size(), 2);
-    assertEquals(response.getAllFieldStats().get("_type").isSearchable(), true);
-    assertEquals(response.getAllFieldStats().get("_type").isAggregatable(), true);
+    assertEquals(response.getAllFieldStats().size(), 1);
   }
 
   public void testSerialization() throws IOException {
@@ -637,7 +635,7 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
               randomNonNegativeLong(), randomBoolean(), randomBoolean());
         } else {
           return new FieldStats.Date(randomNonNegativeLong(), randomNonNegativeLong(), randomNonNegativeLong(),
-              randomNonNegativeLong(), randomBoolean(), randomBoolean(), Joda.forPattern("basicDate"),
+              randomNonNegativeLong(), randomBoolean(), randomBoolean(), Joda.forPattern("basic_date"),
               new Date().getTime(), new Date().getTime());
         }
       case 3:
@@ -680,7 +678,7 @@ public class FieldStatsTests extends ESSingleNodeTestCase {
       double lat = GeoTestUtil.nextLatitude();
       double lon = GeoTestUtil.nextLongitude();
       final String src = lat + "," + lon;
-      client().prepareIndex("test", "test").setSource("field_index", src).get();
+      client().prepareIndex("test").setSource("field_index", src).get();
     }
 
     client().admin().indices().prepareRefresh().get();

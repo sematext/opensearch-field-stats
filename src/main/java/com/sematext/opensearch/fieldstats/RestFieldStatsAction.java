@@ -11,35 +11,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
-import static org.elasticsearch.rest.RestRequest.Method.GET;
-import static org.elasticsearch.rest.RestRequest.Method.POST;
-import static org.elasticsearch.rest.action.RestActions.buildBroadcastShardsHeader;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
+import static org.opensearch.rest.RestRequest.Method.*;
+import static org.opensearch.rest.RestRequest.Method.PUT;
+import static org.opensearch.rest.action.RestActions.buildBroadcastShardsHeader;
 
-import org.elasticsearch.action.support.IndicesOptions;
-import org.elasticsearch.client.node.NodeClient;
-import org.elasticsearch.common.Strings;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentParser;
-import org.elasticsearch.rest.BaseRestHandler;
-import org.elasticsearch.rest.BytesRestResponse;
-import org.elasticsearch.rest.RestController;
-import org.elasticsearch.rest.RestRequest;
-import org.elasticsearch.rest.RestResponse;
-import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.rest.action.RestBuilderListener;
+import org.opensearch.action.support.IndicesOptions;
+import org.opensearch.client.node.NodeClient;
+import org.opensearch.core.common.Strings;
+import org.opensearch.common.settings.Settings;
+import org.opensearch.core.xcontent.XContentBuilder;
+import org.opensearch.core.xcontent.XContentParser;
+import org.opensearch.rest.BaseRestHandler;
+import org.opensearch.rest.BytesRestResponse;
+import org.opensearch.rest.RestController;
+import org.opensearch.rest.RestRequest;
+import org.opensearch.rest.RestResponse;
+import org.opensearch.core.rest.RestStatus;
+import org.opensearch.rest.action.RestBuilderListener;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class RestFieldStatsAction extends BaseRestHandler {
-  public RestFieldStatsAction(Settings settings, RestController controller) {
-    controller.registerHandler(GET, "/_field_stats", this);
-    controller.registerHandler(POST, "/_field_stats", this);
-    controller.registerHandler(GET, "/{index}/_field_stats", this);
-    controller.registerHandler(POST, "/{index}/_field_stats", this);
+
+  @Override
+  public List<Route> routes() {
+    return unmodifiableList(
+            asList(
+                    new Route(GET, "/_field_stats"),
+                    new Route(POST, "/_field_stats"),
+                    new Route(GET, "/{index}/_field_stats"),
+                    new Route(POST, "/{index}/_field_stats")
+            )
+    );
   }
 
   @Override public String getName() {

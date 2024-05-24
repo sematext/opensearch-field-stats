@@ -11,17 +11,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
 
-import org.elasticsearch.action.support.broadcast.BroadcastOperationRequestBuilder;
-import org.elasticsearch.client.ElasticsearchClient;
+import org.opensearch.action.support.broadcast.BroadcastOperationRequestBuilder;
+import org.opensearch.client.OpenSearchClient;
 
 
 public class FieldStatsRequestBuilder extends
     BroadcastOperationRequestBuilder<FieldStatsRequest, FieldStatsResponse, FieldStatsRequestBuilder> {
 
-    public FieldStatsRequestBuilder(ElasticsearchClient client, FieldStatsAction action) {
+    public FieldStatsRequestBuilder(OpenSearchClient client, FieldStatsAction action) {
         super(client, action, new FieldStatsRequest());
     }
 

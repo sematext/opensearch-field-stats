@@ -11,9 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
-import org.elasticsearch.action.ActionType;
+import org.opensearch.action.ActionType;
 
 
 public class FieldStatsAction extends ActionType<FieldStatsResponse> {

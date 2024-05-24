@@ -12,28 +12,28 @@
  * limitations under the License.
  */
 
-package com.sematext.elasticsearch.plugin;
+package com.sematext.opensearch.plugin;
 
-import org.elasticsearch.action.ActionRequest;
-import org.elasticsearch.action.ActionResponse;
-import org.elasticsearch.cluster.metadata.IndexNameExpressionResolver;
-import org.elasticsearch.cluster.node.DiscoveryNodes;
-import org.elasticsearch.common.settings.ClusterSettings;
-import org.elasticsearch.common.settings.IndexScopedSettings;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.settings.SettingsFilter;
-import org.elasticsearch.plugins.ActionPlugin;
-import org.elasticsearch.plugins.Plugin;
-import org.elasticsearch.rest.RestController;
-import org.elasticsearch.rest.RestHandler;
+import org.opensearch.action.ActionRequest;
+import org.opensearch.core.action.ActionResponse;
+import org.opensearch.cluster.metadata.IndexNameExpressionResolver;
+import org.opensearch.cluster.node.DiscoveryNodes;
+import org.opensearch.common.settings.ClusterSettings;
+import org.opensearch.common.settings.IndexScopedSettings;
+import org.opensearch.common.settings.Settings;
+import org.opensearch.common.settings.SettingsFilter;
+import org.opensearch.plugins.ActionPlugin;
+import org.opensearch.plugins.Plugin;
+import org.opensearch.rest.RestController;
+import org.opensearch.rest.RestHandler;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-import com.sematext.elasticsearch.fieldstats.FieldStatsAction;
-import com.sematext.elasticsearch.fieldstats.RestFieldStatsAction;
-import com.sematext.elasticsearch.fieldstats.TransportFieldStatsAction;
+import com.sematext.opensearch.fieldstats.FieldStatsAction;
+import com.sematext.opensearch.fieldstats.RestFieldStatsAction;
+import com.sematext.opensearch.fieldstats.TransportFieldStatsAction;
 
 public class FieldStatsPlugin extends Plugin implements ActionPlugin {
 
@@ -49,6 +49,6 @@ public class FieldStatsPlugin extends Plugin implements ActionPlugin {
       final SettingsFilter settingsFilter,
       final IndexNameExpressionResolver indexNameExpressionResolver,
       final Supplier<DiscoveryNodes> nodesInCluster) {
-    return Arrays.asList(new RestFieldStatsAction(settings, restController));
+    return Arrays.asList(new RestFieldStatsAction());
   }
 }

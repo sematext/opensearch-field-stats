@@ -11,22 +11,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sematext.elasticsearch.fieldstats;
+package com.sematext.opensearch.fieldstats;
 
 import org.apache.lucene.document.InetAddressPoint;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.StringHelper;
-import org.elasticsearch.common.io.stream.StreamInput;
-import org.elasticsearch.common.io.stream.StreamOutput;
-import org.elasticsearch.common.io.stream.Writeable;
-import org.elasticsearch.common.joda.Joda;
-import org.elasticsearch.common.joda.JodaDateFormatter;
-import org.elasticsearch.common.network.InetAddresses;
-import org.elasticsearch.common.network.NetworkAddress;
-import org.elasticsearch.common.time.DateFormatter;
-import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.opensearch.core.common.io.stream.StreamInput;
+import org.opensearch.core.common.io.stream.StreamOutput;
+import org.opensearch.core.common.io.stream.Writeable;
+import org.opensearch.common.joda.Joda;
+import org.opensearch.common.joda.JodaDateFormatter;
+import org.opensearch.common.network.InetAddresses;
+import org.opensearch.common.network.NetworkAddress;
+import org.opensearch.common.time.DateFormatter;
+import org.opensearch.core.xcontent.ToXContent;
+import org.opensearch.core.xcontent.XContentBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -648,7 +648,7 @@ public abstract class FieldStats<T> implements Writeable, ToXContent {
         }
     }
 
-    public static class GeoPoint extends FieldStats<org.elasticsearch.common.geo.GeoPoint> {
+    public static class GeoPoint extends FieldStats<org.opensearch.common.geo.GeoPoint> {
         public GeoPoint(long maxDoc, long docCount, long sumDocFreq, long sumTotalTermFreq,
                   boolean isSearchable, boolean isAggregatable) {
             super((byte) 5, maxDoc, docCount, sumDocFreq, sumTotalTermFreq,
@@ -657,26 +657,26 @@ public abstract class FieldStats<T> implements Writeable, ToXContent {
 
         public GeoPoint(long maxDoc, long docCount, long sumDocFreq, long sumTotalTermFreq,
                         boolean isSearchable, boolean isAggregatable,
-                        org.elasticsearch.common.geo.GeoPoint minValue,
-                        org.elasticsearch.common.geo.GeoPoint maxValue) {
+                        org.opensearch.common.geo.GeoPoint minValue,
+                        org.opensearch.common.geo.GeoPoint maxValue) {
             super((byte) 5, maxDoc, docCount, sumDocFreq, sumTotalTermFreq, isSearchable, isAggregatable,
                 minValue, maxValue);
         }
 
         @Override
-        public org.elasticsearch.common.geo.GeoPoint valueOf(String value, String fmt) {
-            return org.elasticsearch.common.geo.GeoPoint.fromGeohash(value);
+        public org.opensearch.common.geo.GeoPoint valueOf(String value, String fmt) {
+            return org.opensearch.common.geo.GeoPoint.fromGeohash(value);
         }
 
         @Override
-        protected void updateMinMax(org.elasticsearch.common.geo.GeoPoint min,
-                                    org.elasticsearch.common.geo.GeoPoint max) {
+        protected void updateMinMax(org.opensearch.common.geo.GeoPoint min,
+                                    org.opensearch.common.geo.GeoPoint max) {
             minValue.reset(Math.min(min.lat(), minValue.lat()), Math.min(min.lon(), minValue.lon()));
             maxValue.reset(Math.max(max.lat(), maxValue.lat()), Math.max(max.lon(), maxValue.lon()));
         }
 
         @Override
-        public int compare(org.elasticsearch.common.geo.GeoPoint p1, org.elasticsearch.common.geo.GeoPoint p2) {
+        public int compare(org.opensearch.common.geo.GeoPoint p1, org.opensearch.common.geo.GeoPoint p2) {
             throw new IllegalArgumentException("compare is not supported for geo_point field stats");
         }
 
@@ -764,10 +764,10 @@ public abstract class FieldStats<T> implements Writeable, ToXContent {
                     return new GeoPoint(maxDoc, docCount, sumDocFreq, sumTotalTermFreq,
                         isSearchable, isAggregatable);
                 }
-                org.elasticsearch.common.geo.GeoPoint min =
-                    new org.elasticsearch.common.geo.GeoPoint(in.readDouble(), in.readDouble());
-                org.elasticsearch.common.geo.GeoPoint max =
-                    new org.elasticsearch.common.geo.GeoPoint(in.readDouble(), in.readDouble());
+                org.opensearch.common.geo.GeoPoint min =
+                    new org.opensearch.common.geo.GeoPoint(in.readDouble(), in.readDouble());
+                org.opensearch.common.geo.GeoPoint max =
+                    new org.opensearch.common.geo.GeoPoint(in.readDouble(), in.readDouble());
                 return new GeoPoint(maxDoc, docCount, sumDocFreq, sumTotalTermFreq,
                     isSearchable, isAggregatable, min, max);
             }
