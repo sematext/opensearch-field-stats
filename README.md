@@ -11,7 +11,7 @@ Read more about potential use cases in the blog post [Field Stats for Elasticsea
 Installation
 ------------
 
-Make sure to change the version number in the download URL based on your ES version. You can
+Make sure to change the version number in the download URL based on your OpenSearch version. You can
 find available releases here: https://github.com/sematext/opensearch-field-stats/releases. The
 plugin version must match your OpenSearch version. Feel free to contribute
 new version if your version is not supported OpenSearch version which you use.
@@ -24,7 +24,7 @@ bin/opensearch-plugin install URL
 
 
 ```
-bin/plugin install https://github.com/sematext/opensearch-field-stats/releases/download/v2.14.0/field-stats-2.14.0.zip
+bin/opensearch-plugin install https://github.com/sematext/opensearch-field-stats/releases/download/v2.14.0/field-stats-2.14.0.zip
 ```
 
 
@@ -98,7 +98,7 @@ In order to install this plugin, you need to create a zip distribution.
 This will produce a zip file in `build/distributions`. After building the zip file, you can install it like this
 
 ```
-bin/plugin install file:///path/to/opensearch-field-stats/build/distribution/opensearch-field-stats-<VERSION>.zip
+bin/opensearch-plugin install file:///path/to/opensearch-field-stats/build/distribution/opensearch-field-stats-<VERSION>.zip
 ```
 
 Feel free to prepare pull requests.

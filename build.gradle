@@ -22,15 +22,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 apply from: 'gradle/ext.gradle'
-
-// TODO fix and re-enable
-tasks.all {
-    if (name.contains('validateNebulaPom')) {
-        enabled = false
-    }
-}
-//  apply from: 'gradle/publish.gradle'
-
+apply from: 'gradle/publish.gradle'
 
 configurations {
     archives
@@ -56,8 +48,8 @@ opensearchplugin {
     name 'field-stats'
     description 'Field stats plugin for OpenSearch'
     classname 'com.sematext.opensearch.plugin.FieldStatsPlugin'
-    licenseFile = rootProject.file('LICENSE')
-    noticeFile = rootProject.file('README.md')
+    licenseFile rootProject.file('LICENSE')
+    noticeFile rootProject.file('README.md')
 }
 
 artifacts {
@@ -68,3 +60,11 @@ testingConventions.enabled = false
 dependencyLicenses.enabled = true
 thirdPartyAudit.enabled = false
 loggerUsageCheck.enabled = false
+validateNebulaPom.enabled = false
+
+// TODO make publishing work in general (it doesn't seem to work now)
+tasks.all {
+    if (name.contains('validateMavenJavaPom')) {
+        enabled = false
+    }
+}
