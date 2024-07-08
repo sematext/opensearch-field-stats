@@ -9,7 +9,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "org.opensearch.gradle:build-tools:${project.property('opensearch.version')}"
+        classpath "org.opensearch.gradle:build-tools:${project.property('version')}"
     }
 }
 

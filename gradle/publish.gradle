@@ -26,9 +26,9 @@ publishing {
 
                 developers {
                     developer {
-                        id = 'gr0'
-                        name = 'Rafał Kuć'
-                        email = 'rafal.kuc@sematext.com'
+                        id = 'steng'
+                        name = 'Sematext Engineering'
+                        email = 'engineering@sematext.com'
                     }
                 }
 

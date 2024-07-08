@@ -20,11 +20,11 @@ new version if your version is not supported OpenSearch version which you use.
 bin/opensearch-plugin install URL
 ```
 
-### Example for OpenSearch 2.14.0:
+### Example for OpenSearch 2.15.0:
 
 
 ```
-bin/opensearch-plugin install https://github.com/sematext/opensearch-field-stats/releases/download/v2.14.0/field-stats-2.14.0.zip
+bin/opensearch-plugin install https://github.com/sematext/opensearch-field-stats/releases/download/v2.15.0/field-stats-2.15.0.zip
 ```
 
 
@@ -87,7 +87,7 @@ mind and use field stats wisely. This is very useful especially for environemnts
 append-only indices.  
 
 
-Build and  contribution
+Build and contribution
 -----------------------
 In order to install this plugin, you need to create a zip distribution.
 
